@@ -1,0 +1,65 @@
+﻿@implements IDisposable
+@inject NavigationManager NavigationManager
+
+<div class="tabs">
+    <a href="/" class="aTag">
+        <div class="tab @GetActiveLinkClass("/")">
+            <img src="/images/blazor.svg" alt="home" height="18" width="18" />
+            &nbsp;<span>home.razor</span>
+        </div>
+    </a>
+    <a href="/about" class="aTag">
+        <div class="tab @GetActiveLinkClass("/about")">
+            <img src="/images/html_icon.svg" alt="about" height="18" width="18" />
+            &nbsp;<span>about.html</span>
+        </div>
+    </a>
+    <a href="/contact" class="aTag">
+        <div class="tab @GetActiveLinkClass("/contact")">
+            <img src="/images/css_icon.svg" alt="contact" height="18" width="18" />&nbsp;
+            <span>contact.css</span>
+        </div>
+    </a>
+    <a href="/projects" class="aTag">
+        <div class="tab @GetActiveLinkClass("/projects")">
+            <img src="/images/js_icon.svg" alt="project" height="18" width="18" />&nbsp;
+            <span>projects.js</span>
+        </div>
+    </a>
+    <a href="/github" class="aTag">
+        <div class="tab @GetActiveLinkClass("/github")">
+            <img src="/images/markdown_icon.svg" alt="github" height="18" width="18" />
+            &nbsp;<span>github.md</span>
+        </div>
+    </a>
+</div>
+
+@code {
+    private string currentUrl;
+
+    protected override void OnInitialized()
+    {
+        currentUrl = NavigationManager.ToBaseRelativePath(NavigationManager.Uri);
+
+        // Subscribe to the event
+        NavigationManager.LocationChanged += LocationChanged;
+    }
+
+    private string GetActiveLinkClass(string path)
+    {
+        return path == $"/{currentUrl}" ? "active" : "";
+    }
+
+    void LocationChanged(object sender, LocationChangedEventArgs e)
+    {
+        currentUrl = NavigationManager.ToBaseRelativePath(NavigationManager.Uri);
+
+        StateHasChanged();
+    }    
+
+    void IDisposable.Dispose()
+    {
+        // Unsubscribe from the event when our component is disposed
+        NavigationManager.LocationChanged -= LocationChanged;
+    }
+}

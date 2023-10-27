@@ -1,0 +1,117 @@
+﻿@using Portfolio.Shared.Icons
+@inject NavigationManager NavigationManager
+
+<div class="explorer">
+    <p class="title">Explorer</p>
+    <div>
+
+        <input type="checkbox"
+               class="checkbox"
+               id="portfolio-checkbox"
+               checked="@portfolioOpen"
+               bind=@portfolioOpen
+               onclick="@toggle" />
+        <label htmlFor="portfolio-checkbox" class="heading">
+            <ChevronRight Fill="currentColor" Class="chevron" ParamStyle="@portfolioOpen" />
+            Portfolio
+        </label>
+        <div class="files"
+             style=@(portfolioOpen ? "display: 'block'" : "display: 'none'")>
+
+            <a href="/" class="aTag">
+                <div class="file">
+                    <span>
+                        <img src="/images/blazor.svg"
+                             height="18"
+                             width="18"
+                             alt="home"
+                    </span>&nbsp;
+                    <span>home.razor</span>
+                </div>
+            </a>
+
+            <a href="/about" class="aTag">
+                <div class="file">
+                    <span>
+                        <img src="/images/html_icon.svg"
+                             height="18"
+                             width="18"
+                             alt="about.html"
+                    </span>&nbsp;
+                    <span>
+                        about.html
+                    </span>
+                </div>
+            </a>
+            <a href="/contact" class="aTag">
+                <div class="file">
+                    <span>
+                        <img src="/images/css_icon.svg"
+                             height="18"
+                             width="18"
+                             alt="CSS"
+                    </span>&nbsp;
+                    <span>
+                        contact.css
+                    </span>
+                </div>
+            </a>
+            <a href="/projects" class="aTag">
+                <div class="file">
+                    <span>
+                        <img src="/images/js_icon.svg"
+                             height="18"
+                             width="18"
+                             alt="home"
+                    </span>&nbsp;
+                    <span>
+                        projects.js
+                    </span>
+                </div>
+            </a>
+            <a href="/github" class="aTag">
+                <div class="file">
+                    <span>
+                        <img src="/images/markdown_icon.svg"
+                             height="18"
+                             width="18"
+                             alt="home"
+                    </span>&nbsp;
+                    <span>
+                        github.md
+                    </span>
+                </div>
+            </a>            
+        </div>
+    </div>
+</div>
+
+@code {
+    private string currentUrl;
+    private bool portfolioOpen;
+
+    protected override void OnInitialized()
+    {
+        currentUrl = NavigationManager.ToBaseRelativePath(NavigationManager.Uri);
+    }
+
+    void toggle()
+    {
+        portfolioOpen = !portfolioOpen;
+    }
+    
+    // dynamic sidebarBottomItems = new[]
+    // {
+    //     new
+    //     {
+    //         Icon = "images/AccountIcon.svg",
+    //         Path = "/about"
+    //     },
+    //     new
+    //     {
+    //         Icon = "images/SettingsIcon.svg",
+    //         Path = "/settings"
+    //     },
+    // };
+
+}
