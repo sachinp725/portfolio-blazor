@@ -1,5 +1,40 @@
 ﻿@page "/about"
 
+@using System.Globalization
+
 <PageTitle>About me</PageTitle>
 
-<h3>I’m a programmer with over 8 years' experience, specializing in various areas, and have extensive experience with the Microsoft stack of technologies</h3>
+<h3>I’m a programmer with @ExperienceText, specializing in various areas, and have extensive experience with the Microsoft stack of technologies</h3>
+
+@code {
+    [Parameter]
+    public DateTime StartDate { get; set; } = new DateTime(2015, 6, 2);
+
+    [Parameter]
+    public DateTime CurrentDate { get; set; } = DateTime.Now;
+
+    private string ExperienceText { get; set; } = string.Empty;
+    
+    protected override void OnParametersSet()
+    {
+        ExperienceText = CalculateExperienceYears(StartDate, CurrentDate);
+    }
+
+    private static string CalculateExperienceYears(DateTime startDate, DateTime currentDate)
+    {
+        if (startDate > currentDate)
+        {
+            throw new ArgumentException("Start date must be before current date.", nameof(startDate));
+        }
+
+        var timeSpan = currentDate - startDate;
+        var years = timeSpan.TotalDays / 365.25;
+        var roundedYears = Math.Round(years, 1);
+        
+        var numeric = roundedYears.ToString("0.0", CultureInfo.InvariantCulture);
+
+        var unit = Math.Abs(roundedYears - 1.0) < 0.05 ? "year" : "years";
+
+        return $"{numeric} {unit} experience";
+    }
+}
